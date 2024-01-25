@@ -12,13 +12,14 @@ const authRouter = require("./routes/auth");
 const projectsRouter = require("./routes/projects");
 const userDataRouter = require("./routes/userData");
 const searchProjectsRouter = require("./routes/searchProjects");
+const frontendPath = path.join(__dirname, "..", "projectU-frontend");
 var app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "frontend/build")));
+app.use(express.static(path.join(frontendPath, "build")));
 
 app.use(
   session({
@@ -28,8 +29,7 @@ app.use(
     // this next property is saving the session data in our DB
     store: MongoStore.create({
       mongoUrl: process.env.DB_STRING,
-      dbName: "ProjectU_db",
-      collection: "ProjectU_collection",
+      dbName: "ProjectU",
     }),
     cookie: {
       maxAge: 7 * 1000 * 60 * 60 * 25, // cookies/sessions will last a week before requiring a re-login
@@ -54,7 +54,7 @@ app.use("/userData", userDataRouter);
 app.use("/searchProjects", searchProjectsRouter);
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+  res.sendFile(path.join(frontendPath, "build", "index.html"));
 });
 
 module.exports = app;
