@@ -17,7 +17,7 @@ In order to get the MongoDB working, create a ".env" file in your project folder
 In backend use:
 
 ```js
-npm start
+npm test
 ```
 
 In frontend use:
